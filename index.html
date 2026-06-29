@@ -439,6 +439,21 @@ body.light-mode .center-block,body.light-mode .loader-layer { background-color:#
 @media (prefers-reduced-motion:reduce) {
     *,*::before,*::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
     .fill { transition:width 0.3s ease-out !important; }
+} 
+    
+.about-heading{
+    width: 100%;
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 800;
+    color: #f1f2f4;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 0 0 15px rgba(251, 251, 252, 0.8);
+}
+#about-us{
+    flex-direction: column;
 }
 </style>
 </head>
@@ -511,7 +526,9 @@ body.light-mode .center-block,body.light-mode .loader-layer { background-color:#
                 </div>
                 <div class="panel about">
                     <div class="hdr">About Me</div>
-                    <p style="margin-top:6px">I am a BCA student with a deep focus on crafting interactive, minimal user interfaces. Expert in combining clean visual aesthetics with high-performance layouts that tell a story.</p>
+                                        <div class="hdr">About Me</div>
+
+                    <p style="margin-top:6px"> I am a BCA student passionate about web development and design. I enjoy creating clean, user-friendly, and interactive digital experiences. I believe in continuous learning, hard work, and improving my skills every day to build innovative solutions for the future.</p>
                     <a href="ashimrai.pdf" class="buttonDownload">About my CV</a>
                 </div>
             </div>
