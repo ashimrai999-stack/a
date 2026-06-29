@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashim | Experience Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* =============================================
+   BASE STYLES
+   ============================================= */
+:root {
+    --bg-deep: #020d1e;
+    --bg-surface: #0b1320;
+    --text-pure: #ffffff;
+    --text-muted: #8892b0;
+    --hud-accent: #0070f3;
+    --hud-border: rgba(0,112,243,0.25);
+    --hud-glow: rgba(0,112,243,0.15);
+    --border-alpha: rgba(255,255,255,0.05);
+    --card-surface: #0c0c0e;
+    --brand-blue: #0071e3;
+}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+html,body { overflow-x:hidden; max-width:100vw; }
+body { background-color:var(--bg-deep); color:var(--text-pure); font-family:'Plus Jakarta Sans',sans-serif; overflow-x:hidden; }
+p,h1,h2,h3,h4,span,a,li { overflow-wrap:break-word; word-break:break-word; }
+
+/* NAVBAR */
+.navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 40px; background:rgba(2,13,30,0.8); backdrop-filter:blur(10px); border-bottom:1px solid rgba(255,255,255,0.05); position:sticky; top:0; z-index:100; }
+.logo { font-size:1.5rem; font-weight:800; cursor:pointer; color:#fff; letter-spacing:1px; }
+.logo span { color:var(--hud-accent); }
+.nav-links { display:flex; list-style:none; gap:30px; }
+.nav-links a { text-decoration:none; color:var(--text-muted); font-size:0.85rem; font-weight:600; letter-spacing:1px; transition:color 0.3s; }
+.nav-links a:hover { color:var(--hud-accent); }
+
+/* LAYOUT */
+.container { max-width:1200px; margin:0 auto; padding:60px 24px; }
+.content-block { width:100%; position:relative; }
+.padding-block { padding:40px 0; }
+.center-block { display:flex; align-items:center; justify-content:center; min-height:70vh; text-align:center; }
+.app-page { display:none; }
+.app-page.active-view { display:block; }
+.text-accent { color:var(--hud-accent) !important; }
+
+/* JOURNEY HERO */
+.journey-main-title { font-size:3.5rem; font-weight:900; letter-spacing:-1px; margin-bottom:15px; }
+.journey-main-subtitle { max-width:650px; color:var(--text-muted); font-size:1.1rem; line-height:1.6; margin:0 auto; }
+.mouse-scroll-indicator { display:flex; flex-direction:column; align-items:center; gap:10px; color:var(--text-muted); font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; margin-top:40px; }
+.mouse-wheel { width:20px; height:32px; border:2px solid var(--text-muted); border-radius:12px; position:relative; }
+.mouse-wheel::before { content:''; width:4px; height:8px; background:var(--hud-accent); position:absolute; left:50%; transform:translateX(-50%); top:6px; border-radius:2px; animation:mouseScrollAnim 1.5s infinite; }
+@keyframes mouseScrollAnim { 0% { opacity:1; top:6px; } 100% { opacity:0; top:18px; } }
+
+/* SECTION LABELS */
+.block-pretitle { font-size:0.8rem; color:var(--hud-accent); letter-spacing:3px; margin-bottom:15px; text-transform:uppercase; font-weight:600; }
+.gallery-main-heading { font-size:2.5rem; font-weight:800; margin-bottom:40px; letter-spacing:1px; }
+
+/* TIMELINE */
+.timeline-tree { display:flex; flex-direction:column; gap:30px; border-left:2px solid rgba(43,127,255,0.5); padding-left:28px; margin-left:8px; margin-top:60px; padding-top:40px; padding-bottom:40px; position:relative; }
+.timeline-tree::before { display:none; }
+.timeline-node { position:relative; margin-bottom:120px; display:grid; grid-template-columns:1fr 60px 1fr; align-items:center; }
+.timeline-image { padding-right:40px; }
+.timeline-image img { width:100%; max-width:550px; height:320px; object-fit:cover; border-radius:10px; border:1px solid rgba(255,255,255,.15); }
+.timeline-dot { width:24px; height:24px; border-radius:50%; background:#071a33; border:4px solid #2b7fff; margin:auto; position:relative; z-index:10; box-shadow:0 0 10px #2b7fff,0 0 20px #2b7fff,0 0 35px #2b7fff; }
+.timeline-content { padding-left:40px; }
+.node-meta { color:#2b7fff; letter-spacing:4px; font-size:14px; font-weight:700; margin-bottom:15px; }
+.node-body h3 { font-size:42px; line-height:1.1; margin-bottom:15px; }
+.badge { display:inline-block; margin-bottom:20px; color:#888; font-size:0.75rem; background:rgba(255,255,255,0.03); padding:4px 12px; border-radius:4px; border:1px solid rgba(255,255,255,0.06); }
+.node-body p { font-size:18px; color:#aaa; line-height:1.8; max-width:550px; }
+
+/* SKILL MAP */
+.skill-map-container { position:relative; width:100%; max-width:800px; height:400px; margin:50px auto; background:#020813; border-radius:20px; }
+.connection-layer { position:absolute; width:100%; height:100%; }
+.line { fill:none; stroke:#00a8ff; stroke-width:2; stroke-dasharray:8 16; animation:moveFlow 3s linear infinite; }
+@keyframes moveFlow { from { stroke-dashoffset:100; } to { stroke-dashoffset:0; } }
+.node { position:absolute; width:70px; height:70px; border:2px solid #00a8ff; border-radius:50%; background:#050f1c; display:flex; justify-content:center; align-items:center; box-shadow:0 0 15px rgba(0,168,255,0.3); z-index:2; transition:transform 0.3s ease; }
+.node:hover { transform:scale(1.1); }
+.node img { width:60%; height:60%; object-fit:contain; }
+.hub { background:#00a8ff; box-shadow:0 0 30px #00a8ff; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100% { box-shadow:0 0 15px #00a8ff; transform:scale(1); } 50% { box-shadow:0 0 30px #00a8ff; transform:scale(1.05); } }
+
+/* GALLERY */
+.gallery-layout { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:30px; }
+.project-brick { background:var(--bg-surface); border:1px solid rgba(255,255,255,0.05); border-radius:12px; overflow:hidden; cursor:pointer; display:flex; flex-direction:column; transition:transform 0.3s cubic-bezier(0.25,1,0.5,1),border-color 0.3s ease; }
+.project-brick:hover { transform:translateY(-6px); border-color:var(--hud-accent); }
+.brick-image-frame { width:100%; aspect-ratio:16/9; overflow:hidden; background:var(--bg-deep); }
+.brick-image-frame img { width:100%; height:100%; object-fit:cover; opacity:0.85; transition:transform 0.5s ease; }
+.project-brick:hover .brick-image-frame img { transform:scale(1.03); opacity:1; }
+.brick-content { padding:24px; }
+.brick-num { display:block; font-size:0.75rem; font-weight:700; color:var(--hud-accent); margin-bottom:10px; letter-spacing:1px; }
+.project-brick h3 { margin-bottom:10px; font-size:1.35rem; }
+.project-brick p { color:var(--text-muted); font-size:0.95rem; line-height:1.6; }
+
+/* MODAL */
+.hud-modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(1,5,11,0.85); backdrop-filter:blur(12px); z-index:1000; display:none; align-items:center; justify-content:center; padding:24px; }
+.hud-modal-overlay.active { display:flex; }
+.hud-modal-container { background:var(--bg-surface); border:1px solid var(--hud-border); box-shadow:inset 0 0 25px var(--hud-glow),0 30px 60px rgba(0,0,0,0.7); border-radius:14px; width:100%; max-width:850px; padding:40px; position:relative; }
+.card-glitch-line { position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg,transparent,var(--hud-accent),transparent); }
+.modal-close-trigger { position:absolute; top:15px; right:20px; background:none; border:none; color:var(--text-muted); font-size:2rem; cursor:pointer; line-height:1; }
+.modal-close-trigger:hover { color:var(--hud-accent); }
+.modal-showcase-grid { display:grid; grid-template-columns:1.1fr 1fr; gap:35px; align-items:center; }
+.modal-visual-catalog img { width:100%; border-radius:8px; display:block; }
+.modal-project-title { margin:0 0 12px 0; font-size:1.8rem; font-weight:800; }
+.modal-project-desc { color:var(--text-muted); line-height:1.6; font-size:0.95rem; margin-bottom:25px; }
+.modal-action-row { display:flex; align-items:center; justify-content:space-between; margin-top:25px; padding-top:20px; border-top:1px dashed rgba(255,255,255,0.1); }
+.view-project-btn { background:transparent; border:1px solid var(--hud-accent); color:var(--hud-accent); padding:12px 24px; border-radius:6px; font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; cursor:pointer; transition:all 0.2s ease; }
+.view-project-btn:hover { background:var(--hud-accent); color:var(--bg-deep); box-shadow:0 0 20px var(--hud-glow); }
+.next-project-trigger { background:none; border:none; color:var(--text-pure); cursor:pointer; font-family:monospace; font-size:0.85rem; font-weight:700; }
+.next-project-trigger:hover { color:var(--hud-accent); }
+
+/* DETAIL PAGE */
+.return-btn { background:none; border:none; display:inline-flex; align-items:center; color:var(--hud-accent); font-family:monospace; font-size:0.85rem; letter-spacing:1px; margin-bottom:35px; cursor:pointer; }
+.return-btn:hover { transform:translateX(-4px); }
+.workspace-grid { display:grid; grid-template-columns:1.3fr 1fr; gap:45px; align-items:start; }
+.images-gallery-stack { display:flex; flex-direction:column; gap:24px; }
+.gallery-card { background:var(--bg-surface); border:1px solid rgba(255,255,255,0.05); border-radius:10px; overflow:hidden; }
+.gallery-card img { width:100%; height:auto; display:block; }
+.specs-sidebar-panel { background:rgba(11,19,32,0.5); border:1px solid var(--hud-border); box-shadow:inset 0 0 15px var(--hud-glow); border-radius:14px; padding:35px; position:sticky; top:100px; }
+.spec-title { font-size:2.2rem; margin-bottom:15px; font-weight:800; }
+.spec-desc { color:var(--text-muted); line-height:1.7; font-size:1rem; margin-bottom:35px; }
+.data-row { border-top:1px dashed rgba(255,255,255,0.1); padding:16px 0; display:flex; justify-content:space-between; font-size:0.9rem; }
+.data-lbl { color:var(--text-muted); }
+.data-val { color:var(--text-pure); font-weight:600; }
+
+/* IMPACT RECAP */
+.impact-recap-section { background-color:#03070f; padding:80px 6%; width:100%; box-sizing:border-box; display:flex; justify-content:center; align-items:center; }
+.impact-container { max-width:1200px; width:100%; display:grid; grid-template-columns:1fr 1.3fr; gap:60px; align-items:center; }
+.impact-left { display:flex; flex-direction:column; align-items:flex-start; }
+.impact-subtitle { font-family:monospace; color:#2563eb; font-size:0.85rem; letter-spacing:3px; font-weight:bold; margin-bottom:10px; }
+.impact-main-num { font-size:6.5rem; font-weight:700; color:#2563eb; line-height:1; margin:0; text-shadow:0 0 30px rgba(37,99,235,0.4); }
+.impact-title { font-size:2.2rem; color:#ffffff; margin:5px 0 20px 0; font-weight:600; }
+.impact-desc { color:#718096; font-size:0.95rem; line-height:1.6; margin-bottom:35px; max-width:380px; }
+.btn-return-home { display:inline-flex; align-items:center; gap:12px; font-family:monospace; font-size:0.85rem; letter-spacing:2px; color:#ffffff !important; text-decoration:none; background:rgba(10,25,47,0.6) !important; backdrop-filter:blur(8px); border:1px solid #2563eb !important; border-radius:4px; padding:12px 24px; box-shadow:0 0 20px rgba(37,99,235,0.4),0 0 8px rgba(37,99,235,0.2),inset 0 0 10px rgba(37,99,235,0.2) !important; animation:constantPulse 3s infinite ease-in-out; transition:all 0.4s cubic-bezier(0.16,1,0.3,1); }
+.btn-return-home:hover { transform:translateY(-3px); background:rgba(10,25,47,0.8) !important; }
+.btn-return-home .arrow { font-size:1rem; transition:transform 0.3s ease; }
+.btn-return-home:hover .arrow { transform:translateX(-5px); }
+@keyframes constantPulse { 0%,100% { box-shadow:0 0 18px rgba(37,99,235,0.4),0 0 8px rgba(37,99,235,0.2),inset 0 0 10px rgba(37,99,235,0.2) !important; } 50% { box-shadow:0 0 28px rgba(37,99,235,0.6),0 0 14px rgba(37,99,235,0.3),inset 0 0 14px rgba(37,99,235,0.3) !important; border-color:#3b82f6 !important; } }
+.impact-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+.stat-card { background:linear-gradient(135deg,rgba(15,23,42,0.4) 0%,rgba(3,7,15,0.6) 100%); border:1px solid rgba(255,255,255,0.04); border-radius:6px; position:relative; overflow:hidden; height:150px; box-sizing:border-box; transition:transform 0.3s ease,border-color 0.3s ease,box-shadow 0.3s ease; }
+.stat-card:hover { transform:translateY(-4px) scale(1.02); border-color:rgba(37,99,235,0.25) !important; box-shadow:0 12px 30px rgba(0,0,0,0.4),0 0 15px rgba(37,99,235,0.1) !important; }
+.stat-card:hover .card-top-line { width:100% !important; }
+.card-top-line { position:absolute; top:0; left:0; width:25%; height:2px; background:#2563eb; box-shadow:0 0 8px #2563eb; transition:width 0.4s ease; }
+.card-body { display:flex; align-items:center; justify-content:space-between; height:100%; padding:0 35px; }
+.stat-number { font-size:3rem; font-weight:700; color:#2563eb; }
+.stat-label { color:#a0aec0; font-size:0.9rem; text-align:right; line-height:1.4; max-width:110px; }
+
+/* =============================================
+   MOBILE RESPONSIVE OVERRIDES
+   ============================================= */
+
+/* NAVBAR MOBILE */
+@media (max-width:768px) {
+    .navbar { padding:14px 5%; flex-wrap:wrap; gap:8px; }
+    .logo { font-size:1.2rem; }
+    .nav-links { width:100%; justify-content:center; gap:16px; flex-wrap:wrap; }
+    .nav-links a { font-size:0.75rem; }
+}
+
+/* JOURNEY TITLE MOBILE */
+@media (max-width:768px) {
+    .journey-main-title { font-size:2.2rem !important; letter-spacing:-1.5px !important; }
+    .journey-main-subtitle { font-size:0.92rem !important; padding:0 8px; }
+    .container { padding:40px 5% !important; }
+}
+
+/* TIMELINE MOBILE — switch from 3-col grid to block layout */
+@media (max-width:768px) {
+    .timeline-tree { border-left:2px solid rgba(43,127,255,0.5) !important; padding-left:28px !important; margin-left:8px !important; margin-top:30px !important; }
+    .timeline-tree::before { display:none !important; }
+    .timeline-node { display:block !important; padding-left:0 !important; margin-bottom:50px !important; position:relative; grid-template-columns:unset; }
+    .timeline-dot { position:absolute !important; left:-40px !important; top:6px !important; margin:0 !important; width:16px !important; height:16px !important; }
+    .timeline-image { padding:0 !important; margin-bottom:16px !important; }
+    .timeline-image img { width:100% !important; height:200px !important; object-fit:cover !important; max-width:100% !important; }
+    .timeline-content { padding-left:0 !important; }
+    .node-body h3 { font-size:1.3rem !important; }
+    .node-body p { font-size:0.9rem !important; }
+}
+
+/* SKILL MAP MOBILE */
+@media (max-width:768px) {
+    .skill-map-container { height:auto !important; display:flex !important; flex-wrap:wrap !important; justify-content:center !important; gap:14px !important; padding:20px !important; }
+    .skill-map-container .connection-layer { display:none !important; }
+    .skill-map-container .node { position:relative !important; top:auto !important; left:auto !important; width:60px !important; height:60px !important; }
+    .skill-map-container .node.hub { width:68px !important; height:68px !important; order:-1; }
+}
+
+/* GALLERY MOBILE */
+@media (max-width:768px) {
+    .gallery-layout { grid-template-columns:1fr !important; gap:16px !important; }
+    .gallery-main-heading { font-size:1.8rem !important; letter-spacing:-1px !important; margin-bottom:16px !important; }
+    .brick-image-frame { height:180px !important; }
+    .brick-content { padding:16px !important; }
+    .project-brick h3 { font-size:1.1rem !important; }
+}
+
+/* MODAL MOBILE — bottom sheet */
+@media (max-width:768px) {
+    .hud-modal-overlay { padding:0 !important; align-items:flex-end !important; }
+    .hud-modal-container { border-radius:20px 20px 0 0 !important; max-height:88svh !important; overflow-y:auto !important; padding:24px 16px !important; }
+    .modal-showcase-grid { grid-template-columns:1fr !important; gap:16px !important; }
+    .modal-project-title { font-size:1.4rem !important; }
+    .modal-action-row { flex-direction:column !important; gap:12px !important; }
+    .view-project-btn { width:100% !important; text-align:center !important; }
+}
+
+/* DETAIL PAGE MOBILE */
+@media (max-width:768px) {
+    .workspace-grid { grid-template-columns:1fr !important; gap:24px !important; }
+    .specs-sidebar-panel { position:relative !important; top:0 !important; padding:20px !important; }
+    .spec-title { font-size:1.6rem !important; }
+    .return-btn { font-size:0.78rem !important; margin-bottom:20px !important; }
+}
+
+/* IMPACT RECAP MOBILE */
+@media (max-width:768px) {
+    .impact-recap-section { padding:60px 5%; }
+    .impact-container { grid-template-columns:1fr !important; gap:40px !important; }
+    .impact-left { align-items:center !important; text-align:center !important; }
+    .impact-main-num { font-size:5rem !important; }
+    .impact-title { font-size:1.8rem !important; }
+    .impact-desc { max-width:100% !important; font-size:0.9rem !important; }
+    .impact-grid { grid-template-columns:1fr 1fr !important; gap:12px !important; }
+    .stat-card { height:120px !important; }
+    .card-body { padding:0 20px !important; }
+    .stat-number { font-size:2.2rem !important; }
+    .stat-label { font-size:0.8rem !important; max-width:90px !important; }
+}
+@media (max-width:360px) {
+    .impact-grid { grid-template-columns:1fr !important; }
+}
+
+/* TABLET */
+@media (min-width:769px) and (max-width:1024px) {
+    .workspace-grid { grid-template-columns:1fr 1fr !important; }
+    .specs-sidebar-panel { position:relative; top:0; }
+    .modal-showcase-grid { grid-template-columns:1fr !important; }
+    .journey-main-title { font-size:3.5rem !important; }
+}
+
+/* TOUCH DEVICES */
+@media (hover:none) and (pointer:coarse) {
+    .project-brick:active { transform:translateY(-3px); border-color:var(--hud-accent); }
+    .view-project-btn:active { background:var(--hud-accent); color:var(--bg-deep); }
+    .stat-card:active { transform:translateY(-2px); }
+    .dot { width:12px !important; height:12px !important; padding:6px; }
+}
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion:reduce) {
+    *,*::before,*::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo" onclick="window.location.href='index.html'">ASHIM<span>.DEV</span></div>
+    <ul class="nav-links">
+        <li><a href="index.html#home-section">HOME</a></li>
+        <li><a href="index.html#about-us">ABOUT</a></li>
+        <li><a href="index.html#reviews-section">REVIEWS</a></li>
+        <li><a href="index.html#contact-section">CONTACT</a></li>
+    </ul>
+</nav>
+
+<main class="page-stream">
+    <div id="homePage" class="app-page active-view">
+
+        <section class="content-block center-block">
+            <div class="journey-landing-inner">
+                <h1 class="journey-main-title">PORTFOLIO JOURNEY.</h1>
+                <p class="journey-main-subtitle">A deeper look into my technical abilities, organizational journey, and selected projects that shaped my growth as a developer and designer.</p>
+                <div class="mouse-scroll-indicator">
+                    <div class="mouse-wheel"></div>
+                    <span>Scroll Down to Discover</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-block padding-block">
+            <div class="container">
+                <div class="timeline-tree">
+                    <h2 class="block-pretitle">01 / HISTORY TIMELINE</h2>
+                    <div class="timeline-node">
+                        <div class="timeline-image"><img src="ashim.jpg" alt="2023"></div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="node-meta">EXPERIENCE / 2023</div>
+                            <div class="node-body">
+                                <h3>Started Exploring Web Development</h3>
+                                <span class="badge">Personal Learning Journey</span>
+                                <p>I began learning how websites work, from structure and styling to basic interaction and interface design.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-block padding-block">
+            <div class="container">
+                <h2 class="block-pretitle">02 / HISTORY TIMELINE</h2>
+                <div class="timeline-tree">
+                    <div class="timeline-node">
+                        <div class="timeline-image"><img src="him.jpg" alt="2024"></div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="node-meta">EXPERIENCE / 2024</div>
+                            <div class="node-body">
+                                <h3>Built Personal &amp; Collaborative Projects</h3>
+                                <span class="badge">Campus &amp; Freelance Work</span>
+                                <p>I worked on projects involving frontend, backend, UI design, and team-based development workflows.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-block padding-block">
+            <div class="container">
+                <h2 class="block-pretitle">02 / CONNECTED SKILLS MAP</h2>
+                <div class="skill-map-container">
+                    <svg class="connection-layer" viewBox="0 0 800 400">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#00a8ff"/>
+                            </marker>
+                        </defs>
+                        <path class="line" d="M 400 200 Q 200 100, 120 120" marker-end="url(#arrowhead)"/>
+                        <path class="line" d="M 400 200 Q 250 300, 270 320" marker-end="url(#arrowhead)"/>
+                        <path class="line" d="M 400 200 Q 600 100, 680 120" marker-end="url(#arrowhead)"/>
+                        <path class="line" d="M 400 200 Q 550 300, 480 320" marker-end="url(#arrowhead)"/>
+                    </svg>
+                    <div class="node hub" style="top:170px;left:370px;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-iuImJCf8W7e59zWt-NvdoFFIiE3xoocq3g&s" alt="Hub"></div>
+                    <div class="node" style="top:100px;left:100px;"><img src="https://cdn-icons-png.flaticon.com/128/732/732212.png" alt="HTML"></div>
+                    <div class="node" style="top:300px;left:250px;"><img src="https://cdn-icons-png.flaticon.com/128/732/732190.png" alt="CSS"></div>
+                    <div class="node" style="top:100px;left:650px;"><img src="https://cdn-icons-png.flaticon.com/128/1183/1183672.png" alt="React"></div>
+                    <div class="node" style="top:300px;left:450px;"><img src="https://cdn-icons-png.flaticon.com/128/5968/5968292.png" alt="JS"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-block padding-block">
+            <div class="container">
+                <h2 class="block-pretitle">03 / PROJECT DISPLAY</h2>
+                <h1 class="gallery-main-heading">PROJECT GALLERY</h1>
+                <div class="gallery-layout">
+                    <div class="project-brick" onclick="openShowcaseModal(0)">
+                        <div class="brick-image-frame"><img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" alt="Portfolio Preview"></div>
+                        <div class="brick-content"><span class="brick-num">01 / FRONTEND DESIGN</span><h3>Cinematic Portfolio Website</h3><p>A cinematic personal portfolio website with smooth layouts and modern aesthetics.</p></div>
+                    </div>
+                    <div class="project-brick" onclick="openShowcaseModal(1)">
+                        <div class="brick-image-frame"><img src="work.jpeg" alt="Workshop Preview"></div>
+                        <div class="brick-content"><span class="brick-num">02 / WEB APP</span><h3>Internship Experience</h3><p>During my internship, I gained practical experience in web development.</p></div>
+                    </div>
+                    <div class="project-brick" onclick="openShowcaseModal(2)">
+                        <div class="brick-image-frame"><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80" alt="Store Preview"></div>
+                        <div class="brick-content"><span class="brick-num">03 / Rai Fancy Store</span><h3>Full-Stack E-Commerce</h3><p>A comprehensive platform with secure authentication, cart management, and database integration.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="detailsPage" class="app-page">
+        <div class="container">
+            <button class="return-btn" onclick="navigateToHomeGrid()">← BACK_TO_MAIN_GRID</button>
+            <div class="workspace-grid">
+                <div id="imagesStack" class="images-gallery-stack"></div>
+                <div class="specs-sidebar-panel">
+                    <h1 id="projectTitle" class="spec-title">Project Title</h1>
+                    <p id="projectDesc" class="spec-desc"></p>
+                    <div class="data-row"><span class="data-lbl">Core Architecture Matrix</span><span id="projectTech" class="data-val text-accent">Loading...</span></div>
+                    <div class="data-row"><span class="data-lbl">Deployment State</span><span class="data-val text-accent">Active</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div id="globalShowcaseModal" class="hud-modal-overlay" onclick="closeModalOnBackground(event)">
+    <div class="hud-modal-container">
+        <div class="card-glitch-line"></div>
+        <button class="modal-close-trigger" onclick="closeShowcaseModal()">×</button>
+        <div class="modal-showcase-grid">
+            <div class="modal-visual-catalog"><img id="modalImg" src="" alt="Project Preview"></div>
+            <div class="modal-text-manifest">
+                <h2 id="modalTitle" class="modal-project-title">Project Title</h2>
+                <p id="modalDesc" class="modal-project-desc"></p>
+                <div class="modal-action-row">
+                    <button class="view-project-btn" onclick="goToDedicatedProjectPage()">View Project</button>
+                    <button class="next-project-trigger" onclick="loadNextProjectNode()">Next Project →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="impact-recap-section">
+    <div class="impact-container">
+        <div class="impact-left">
+            <span class="impact-subtitle">IMPACT RECAP</span>
+            <h1 class="impact-main-num">02</h1>
+            <h2 class="impact-title">Experience</h2>
+            <p class="impact-desc">A compact snapshot of the clients, projects, and achievements shaped through design, development, and organizational work.</p>
+            <a href="index.html" class="btn-return-home">RETURN HOME <span class="arrow">←</span></a>
+        </div>
+        <div class="impact-grid">
+            <div class="stat-card"><div class="card-top-line"></div><div class="card-body"><span class="stat-number">3</span><span class="stat-label">Clients</span></div></div>
+            <div class="stat-card"><div class="card-top-line"></div><div class="card-body"><span class="stat-number">01</span><span class="stat-label">Years Experience</span></div></div>
+            <div class="stat-card"><div class="card-top-line"></div><div class="card-body"><span class="stat-number">4</span><span class="stat-label">Completed<br>Projects</span></div></div>
+            <div class="stat-card"><div class="card-top-line"></div><div class="card-body"><span class="stat-number">02</span><span class="stat-label">Achievements</span></div></div>
+        </div>
+    </div>
+</section>
+
+<script>
+const portfolioRepository=[
+    {title:"Cinematic Portfolio Website",description:"An immersive showcase constructed with highly stylized HUD components and liquid reactive interface layouts.",image:"https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",techStack:"Vanilla JS, CSS Grid Layouts",galleryImages:["pro.png","https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80","po.png","https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80","can.png"]},
+    {title:"Workshop / Internship",description:"By working on real-world projects and collaborating with mentors and team members, I enhanced my skills in HTML, CSS, JavaScript, PHP, and MySQL.",image:"https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80",techStack:"Frontend: HTML5, CSS3, JavaScript, Bootstrap",galleryImages:["https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80","shop.jpeg","work.jpeg","lara.jpeg"]},
+    {title:"Full-Stack E-Commerce System",description:"A comprehensive platform with secure authentication, cart management, and database integration.",image:"https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=800&q=80",techStack:"Html, Css, JS, MySQL, PHP",galleryImages:["https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=800&q=80","https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80","shoe.jpeg"]}
+];
+let currentActiveIndex=0;
+const modalOverlayNode=document.getElementById("globalShowcaseModal");
+const homePageNode=document.getElementById("homePage");
+const detailsPageNode=document.getElementById("detailsPage");
+function openShowcaseModal(index){currentActiveIndex=index;renderModalDataNode();if(modalOverlayNode)modalOverlayNode.classList.add("active");}
+function renderModalDataNode(){const item=portfolioRepository[currentActiveIndex];const imgEl=document.getElementById("modalImg");const titleEl=document.getElementById("modalTitle");const descEl=document.getElementById("modalDesc");if(imgEl)imgEl.src=item.image;if(titleEl)titleEl.innerText=item.title;if(descEl)descEl.innerText=item.description;}
+function loadNextProjectNode(){currentActiveIndex=(currentActiveIndex+1)%portfolioRepository.length;renderModalDataNode();}
+function closeShowcaseModal(){if(modalOverlayNode)modalOverlayNode.classList.remove("active");}
+function goToDedicatedProjectPage(){
+    closeShowcaseModal();
+    const selectedProject=portfolioRepository[currentActiveIndex];
+    const titleEl=document.getElementById("projectTitle");const descEl=document.getElementById("projectDesc");const techEl=document.getElementById("projectTech");const imgContainer=document.getElementById("imagesStack");
+    if(titleEl)titleEl.innerText=selectedProject.title;if(descEl)descEl.innerText=selectedProject.description;if(techEl)techEl.innerText=selectedProject.techStack;
+    if(imgContainer){imgContainer.innerHTML="";selectedProject.galleryImages.forEach(srcPath=>{const cardDiv=document.createElement("div");cardDiv.className="gallery-card";const imageTag=document.createElement("img");imageTag.src=srcPath;imageTag.alt="Project Image";cardDiv.appendChild(imageTag);imgContainer.appendChild(cardDiv);});}
+    if(homePageNode&&detailsPageNode){homePageNode.classList.remove("active-view");detailsPageNode.classList.add("active-view");}
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+function navigateToHomeGrid(){if(homePageNode&&detailsPageNode){detailsPageNode.classList.remove("active-view");homePageNode.classList.add("active-view");}window.scrollTo({top:0,behavior:'auto'});}
+function closeModalOnBackground(event){if(event.target.classList.contains('hud-modal-overlay'))closeShowcaseModal();}
+</script>
+</body>
+</html>
